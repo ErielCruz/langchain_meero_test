@@ -8,7 +8,7 @@ Sample inputs:
 
 Answer:
 1. What is the overall conclusion from interviews?
-2. Which customer gave the most positive feedback?
+2. What is some positive feedback received from customers?
 
 Sumarize
 1. Write me in bullet points, what are customers saying about our app
