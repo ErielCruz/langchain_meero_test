@@ -4,7 +4,7 @@ The source of these sessions is [Notion database](https://www.notion.so/meero-co
 
 If you need any assistance regarding this app, please reach out to eriel@meero.com
 
-For better results, here some guidelines:
-- Be specific on your question
+For better results, here are some guidelines:
+- Be concrete about your question
 - Use specific adjectives and subjects names when looking for specific data
 - Remember this app will only get data from the above source and not any external data
