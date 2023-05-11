@@ -109,7 +109,6 @@ def answer(db, query, template_type, k=10):
 db = get_vectordb_documents()
 
 st.title('Insights from User Research Sessions')
-# What is the overall conclusion from interviews?
 
 st.markdown(app_explanation)
 
@@ -117,7 +116,7 @@ template_type = st.radio(
     "What would you like the LLM to do?",
     ('Answer', 'Summarize'))
 
-answer = """
+answer_questions = """
     You are a helpful assistant that that can answer questions from Notion.
 
     Given the following extracted parts of one or many Notion documents and a question, create a final answer.
@@ -142,9 +141,9 @@ summarize = """
         """
 
 if template_type == "Answer":
-    template_context = answer
+    template_context = answer_questions
     with st.expander('Template text'):
-        st.write(answer)
+        st.write(answer_questions)
 elif template_type == "Summarize":
     template_context = summarize
     with st.expander('Template text'):
