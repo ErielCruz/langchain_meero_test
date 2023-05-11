@@ -103,16 +103,16 @@ def get_response_from_query(db, query, k=10):
 
 
 # Example usage:
-# create_db_from_notion_docs()
+create_db_from_notion_docs()
 
 # Now we can load the persisted database from disk, and use it as normal.
-db = get_vectordb_documents()
+# db = get_vectordb_documents()
 
-query = "What can we learn from the interview to Junot?"
-response, docs, total_tokens = get_response_from_query(db, query)
+# query = "What can we learn from the interview to Junot?"
+# response, docs, total_tokens = get_response_from_query(db, query)
 
-query_cost = round((total_tokens / 1000) * 0.002, 3)
+# query_cost = round((total_tokens / 1000) * 0.002, 3)
 
-print(textwrap.fill(response, width=120))
-print(f'\nCost of query = ${query_cost}')
-print(f'Total # of tokens used = {total_tokens}\n')
+# print(textwrap.fill(response, width=120))
+# print(f'\nCost of query = ${query_cost}')
+# print(f'Total # of tokens used = {total_tokens}\n')
