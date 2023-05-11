@@ -115,7 +115,7 @@ def answer_question(db, query, k=10):
 # Load the persisted database from disk
 db = get_vectordb_documents()
 
-st.title('Insights from Customers Interviews')
+st.title('Insights from User Research Sessions')
 # What is the overall conclusion from interviews?
 
 st.markdown(app_explanation)
