@@ -1,0 +1,5 @@
+For better results using this app, here are some guidelines:
+- When asking questions, be concrete about your question
+- When requesting for summaries, write in imperative form: Do, Write, Explain
+- Use specific adjectives and subjects names when looking for specific data
+- Remember this app will only get data from the above source and not any external data

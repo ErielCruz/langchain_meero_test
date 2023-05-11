@@ -19,6 +19,8 @@ load_dotenv()
 with open('app_explanation.md', 'r') as file:
     app_explanation = file.read()
 
+with open('templates_guidelines.md', 'r') as file:
+    templates_guidelines = file.read()
 
 def load_notion_documents(path="Notion_DB/") -> List[Document]:
     """Load documents."""
@@ -57,7 +59,7 @@ def num_tokens_used(string: str, model_name: str ="gpt-3.5-turbo") -> int:
     num_tokens = len(encoding.encode(string))
     return num_tokens
 
-def answer_question(db, query, k=10):
+def answer(db, query, template_type, k=10):
     """
     gpt-3.5-turbo can handle up to 4097 tokens. Setting the chunksize to 1000 and k to 4 maximizes
     the number of tokens to analyze.
@@ -71,16 +73,7 @@ def answer_question(db, query, k=10):
     chat = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
     # Template to use for the system message prompt
-    template = """
-        You are a helpful chatbot having a conversation with a human.
-
-        Given the following extracted parts of a long Notion document and a question, create a final answer.
-        
-        Only use the factual information from the documents to answer the question.
-        
-        If you feel like you don't have enough information to answer the question, say "I don't know".
-        
-        Your answers should be verbose and detailed.
+    template = template_type + """
 
         {context}
 
@@ -119,8 +112,48 @@ st.title('Insights from User Research Sessions')
 # What is the overall conclusion from interviews?
 
 st.markdown(app_explanation)
+
+template_type = st.radio(
+    "What would you like the LLM to do?",
+    ('Answer', 'Summarize'))
+
+answer = """
+    You are a helpful assistant that that can answer questions from Notion.
+
+    Given the following extracted parts of one or many Notion documents and a question, create a final answer.
+    
+    Only use the factual information from the documents to answer the question.
+    
+    If you feel like you don't have enough information to answer the question, say "I don't know".
+    
+    Your answers should be verbose and detailed.
+    """
+
+summarize = """
+    You are a helpful assistant that that can summarize content from Notion.
+
+    Given the following extracted parts of one or many Notion documents and a request, create a final answer.
+    
+    Only use the factual information from the documents to do the request.
+    
+    If you feel like you don't have enough information to do the request, say "I don't know".
+    
+    Your answers should be verbose and detailed.
+        """
+
+if template_type == "Answer":
+    template_context = answer
+    with st.expander('Template text'):
+        st.write(answer)
+elif template_type == "Summarize":
+    template_context = summarize
+    with st.expander('Template text'):
+        st.write(summarize)    
+
+st.markdown(templates_guidelines)
+
 col1, col2 = st.columns([9, 1])
-prompt = col1.text_input('Ask your question here')
+text_input = col1.text_input('Enter your question or request here')
 col2.write("   ")
 col2.write("   ")
 
@@ -128,7 +161,7 @@ col2.write("   ")
 if col2.button('Ask'):
         
     with st.spinner('Fetching documents data...'):
-        response_text, chain, docs_page_sources, memory, total_tokens = answer_question(db, prompt)
+        response_text, chain, docs_page_sources, memory, total_tokens = answer(db, text_input, template_type=template_context)
     print(response_text)
     st.write(response_text) 
 
