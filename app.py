@@ -134,9 +134,9 @@ summarize = """
 
     Given the following extracted parts of one or many Notion documents and a request, create a final answer.
     
-    Only use the factual information from the documents to do the request.
+    Only use the factual information from the documents to complete the request.
     
-    If you feel like you don't have enough information to do the request, say "I don't know".
+    If you feel like you don't have enough information to complete the request, say "I don't know".
     
     Your answers should be verbose and detailed.
         """
