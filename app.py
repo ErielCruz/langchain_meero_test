@@ -156,5 +156,5 @@ if prompt:
     with st.expander('Sources'): 
         st.info(docs_page_sources)
 
-    with st.expander('History'): 
-        st.info(memory.buffer)
+    # with st.expander('History'): 
+        # st.info(memory.buffer)
