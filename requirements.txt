@@ -1,4 +1,5 @@
 langchain
 tiktoken
 openai
+faiss
 python-dotenv
