@@ -111,6 +111,7 @@ db = get_vectordb_documents()
 st.title('Insights from User Research Sessions')
 
 st.markdown(app_explanation)
+st.markdown(templates_guidelines)
 
 template_type = st.radio(
     "What would you like the LLM to do?",
@@ -148,8 +149,6 @@ elif template_type == "Summarize":
     template_context = summarize
     with st.expander('Template text'):
         st.write(summarize)    
-
-st.markdown(templates_guidelines)
 
 col1, col2 = st.columns([9, 1])
 text_input = col1.text_input('Enter your question or request here')
