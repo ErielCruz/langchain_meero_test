@@ -16,6 +16,10 @@ from langchain.prompts import PromptTemplate
 
 load_dotenv()
 
+with open('app_explanation.md', 'r') as file:
+    app_explanation = file.read()
+
+
 def load_notion_documents(path="Notion_DB/") -> List[Document]:
     """Load documents."""
     ps = list(Path(path).glob("**/*.md"))
@@ -53,7 +57,7 @@ def num_tokens_used(string: str, model_name: str ="gpt-3.5-turbo") -> int:
     num_tokens = len(encoding.encode(string))
     return num_tokens
 
-def start_convo(db, query, k=10):
+def answer_question(db, query, k=10):
     """
     gpt-3.5-turbo can handle up to 4097 tokens. Setting the chunksize to 1000 and k to 4 maximizes
     the number of tokens to analyze.
@@ -104,57 +108,29 @@ def start_convo(db, query, k=10):
 
     return response_text, chain, docs_page_sources, memory, total_tokens
 
-def print_results(response_text, total_tokens):
-    query_cost = round((total_tokens / 1000) * 0.002, 3)
-
-    print(response_text)
-    print(f'\nCost of query = ${query_cost}')
-    print(f'Total # of tokens used = {total_tokens}\n')
-
-
-def continue_convo(db, query, chain, k=10):
-    """
-    gpt-3.5-turbo can handle up to 4097 tokens. Setting the chunksize to 1000 and k to 4 maximizes
-    the number of tokens to analyze.
-    """
-
-    docs = db.similarity_search_with_score(query, k=k)
-    docs_data = [doc for doc, _ in docs]
-    docs_page_content = " ".join([d.page_content for d in docs_data])
-    docs_page_sources = set(d.metadata['source'] for d in docs_data)
-
-    response = chain({"input_documents": docs_data, "human_input": query}, return_only_outputs=True)
-    response_text = response['output_text']
-
-    query_tokens = num_tokens_used(query)
-    docs_tokens = num_tokens_used(docs_page_content)
-    response_tokens = num_tokens_used(response_text)
-    total_tokens = query_tokens + docs_tokens + response_tokens
-
-    return response_text, chain, docs_page_sources, total_tokens
-
 
 # Example usage:
 # create_db_from_notion_docs()
 
-# Now we can load the persisted database from disk, and use it as normal.
+# Load the persisted database from disk
 db = get_vectordb_documents()
 
 st.title('Insights from Customers Interviews')
-prompt = st.text_input('Ask your question here')
+# What is the overall conclusion from interviews?
 
+st.markdown(app_explanation)
+col1, col2 = st.columns([9, 1])
+prompt = col1.text_input('Ask your question here')
+col2.write("   ")
+col2.write("   ")
 
 # Show stuff to the screen if there's a prompt
-if prompt: 
-
-    response_text, chain, docs_page_sources, memory, total_tokens = start_convo(db, prompt)
-
-    # response_text, chain, docs_page_sources, total_tokens = continue_convo(db, prompt, chain)
-
+if col2.button('Ask'):
+        
+    with st.spinner('Fetching documents data...'):
+        response_text, chain, docs_page_sources, memory, total_tokens = answer_question(db, prompt)
+    print(response_text)
     st.write(response_text) 
 
     with st.expander('Sources'): 
-        st.info(docs_page_sources)
-
-    # with st.expander('History'): 
-        # st.info(memory.buffer)
+        st.json(docs_page_sources)
