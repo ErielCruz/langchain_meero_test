@@ -7,8 +7,8 @@ For better results using this app, here are some guidelines:
 Sample inputs:
 
 Answer:
-1. What is the overall conclusion from interviews?
-2. What is some positive feedback received from customers?
+1. What is the overall conclusion from all interviews?
+2. What is some positive feedback received from all customers?
 
 Sumarize
 1. Write me in bullet points, what are customers saying about our app
